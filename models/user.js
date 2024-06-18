@@ -33,10 +33,7 @@ const userSchema = mongoose.Schema({
 userSchema.statics.register = async function ({ fullName, username, email, password }) {
 
     // checking if fields are empty
-    if (!fullName) throw Error(`enter fullname`);
-    if (!username) throw Error(`enter username`);
-    if (!email) throw Error(`enter email`);
-    if (!password) throw Error(`enter password`);
+    if (!fullName || !username || !email || !password) throw Error(`fill all the fields`)
 
     // checking whether user already exists
     const modelStat = await this.findOne({ email });

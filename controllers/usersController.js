@@ -5,10 +5,7 @@ import userModel from "../models/user.js";
 export const loginUser = async (req, res) => {
     try {
         const response = await userModel.login(req.body);
-        res.status(200).json({
-            login: "successful",
-            user: response
-        })
+        res.status(200).json(response)
     } catch (error) {
         res.status(400).json({ login: "unsuccessful", error: error.message });
     }
@@ -18,7 +15,7 @@ export const loginUser = async (req, res) => {
 export const registerUser = async (req, res) => {
     try {
         const response = await userModel.register(req.body)
-        res.status(200).json({ signup: "successful", user: response })
+        res.status(200).json(response)
     } catch (error) {
         res.status(400).json({ signup: "unsuccessful", error: error.message });
     }
