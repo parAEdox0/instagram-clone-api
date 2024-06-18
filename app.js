@@ -5,6 +5,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import usersRouter from "./routes/usersRouter.js";
+import cors from "cors";
 
 // basic configuration
 dotenv.config();
@@ -20,6 +21,7 @@ const MONGOOSE_URI = process.env.MONGOOSE_URI;
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // routing middlewares
 app.use("/users", usersRouter);
