@@ -44,6 +44,10 @@ const userSchema = mongoose.Schema({
             ref: "User"
         }
     ],
+    profile: {
+        type: String,
+        default: "placeholder.webp"
+    },
     bio: {
         type: String,
         default: ""
@@ -93,23 +97,25 @@ userSchema.statics.register = async function ({ fullName, username, email, passw
 userSchema.statics.login = async function ({ email, password }) {
 
     // checking if fields are empty
-    if (!email) throw Error(`enter email`);
-    if (!password) throw Error(`enter password`);
+    if (!email || !password) throw Error(`fill all the fields`);
 
     // retreiving user from database
     const user = await this.findOne({ email });
     if (!user) throw Error(`user does not exist`);
 
+    // validating password
+    const correctPassword = await bcrypt.compare(password, user.password)
+    if (!correctPassword) throw Error(`wrong password`);
+
     // creating Jwt token
     const jwtToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
 
-    // validating Jwt token
-    const tokenData = jwt.verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjcwNTAwY2YyMmZkMTQwNzlkNGRjM2EiLCJpYXQiOjE3MTg2MzY2NzJ9.pIIOW51IrO-0XKUoD2oLUuyQzZ8DPvgkEloiQR6i-6g", process.env.JWT_SECRET);
+    // returning user and jwt token
+    return { _id: user._id, token: jwtToken };
 
-    // validating password
-    const correctPassword = await bcrypt.compare(password, user.password)
-    if (correctPassword) return { tokenData };
-    else throw Error(`incorrect password`)
+
+
+
 
 }
 
