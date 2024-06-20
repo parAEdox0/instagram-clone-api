@@ -5,6 +5,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import usersRouter from "./routes/usersRouter.js";
+import postsRouter from "./routes/postsRouter.js";
 import cors from "cors";
 
 // basic configuration
@@ -25,6 +26,7 @@ app.use(cors());
 
 // routing middlewares
 app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
 
 mongoose.connect(MONGOOSE_URI)
     .then(() => {

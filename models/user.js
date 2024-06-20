@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 
 // creting user schema
 const userSchema = mongoose.Schema({
